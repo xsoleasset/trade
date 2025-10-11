@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XsoleTrades — Client Login & Signup</title>
+
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <style>
+    body {
+      background: url('back.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: "Poppins", sans-serif;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.637);
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen px-4">
+
+  <div class="card w-full max-w-md" data-aos="zoom-in">
+    <h1 id="formTitle" class="text-3xl font-bold text-center mb-6 text-indigo-700">Client Login</h1>
+
+    <form id="authForm" class="space-y-4">
+      <div id="nameField" class="hidden">
+        <label class="block text-gray-700 font-medium">Full Name</label>
+        <input type="text" id="fullname" class="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Your full name" />
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium">Email</label>
+        <input type="email" id="email" class="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter your email" required />
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium">Password</label>
+        <input type="password" id="password" class="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter your password" required />
+      </div>
+
+      <button type="submit" id="authBtn" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition">
+        Login
+      </button>
+    </form>
+
+    <p class="text-sm text-center text-gray-600 mt-4">
+      <span id="toggleText">Don’t have an account?</span>
+      <a href="#" id="toggleLink" class="text-indigo-600 font-semibold">Sign up</a>
+    </p>
+
+    <p id="message" class="text-center mt-3 text-sm"></p>
+  </div>
+
+  <!-- Firebase + AOS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
+  <script type="module">
+    // Import Firebase functions
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+    import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBvuKoOq-gP7lnXdVNSyjDVBDrvSEsPe1Y",
+      authDomain: "xsole-d04f5.firebaseapp.com",
+      projectId: "xsole-d04f5",
+      storageBucket: "xsole-d04f5.firebasestorage.app",
+      messagingSenderId: "887725919565",
+      appId: "1:887725919565:web:80d856561725bdc0dd7b04",
+      measurementId: "G-427B7GX5N6"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    console.log("🔥 Firebase connected successfully!");
+
+    // Toggle between Login and Signup
+    const formTitle = document.getElementById("formTitle");
+    const nameField = document.getElementById("nameField");
+    const authBtn = document.getElementById("authBtn");
+    const toggleText = document.getElementById("toggleText");
+    const toggleLink = document.getElementById("toggleLink");
+    const message = document.getElementById("message");
+    let isSignup = false;
+
+    toggleLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      isSignup = !isSignup;
+      if (isSignup) {
+        formTitle.textContent = "Create Account";
+        authBtn.textContent = "Sign Up";
+        toggleText.textContent = "Already have an account?";
+        toggleLink.textContent = "Login";
+        nameField.classList.remove("hidden");
+      } else {
+        formTitle.textContent = "Client Login";
+        authBtn.textContent = "Login";
+        toggleText.textContent = "Don’t have an account?";
+        toggleLink.textContent = "Sign up";
+        nameField.classList.add("hidden");
+      }
+      message.textContent = "";
+    });
+
+    // Handle login/signup
+    document.getElementById("authForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const fullname = document.getElementById("fullname").value;
+
+      try {
+        if (isSignup) {
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+          await setDoc(doc(db, "clients", user.uid), {
+            name: fullname,
+            email: email,
+            profit: 0,
+            capital: 0,
+            withdrawable: 0,
+          });
+          message.textContent = "✅ Account created successfully!";
+          message.className = "text-green-600 text-center mt-3 text-sm";
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+          message.textContent = "✅ Login successful! Redirecting...";
+          message.className = "text-green-600 text-center mt-3 text-sm";
+          setTimeout(() => {
+            window.location.href = "dashboard.html"; // Redirect to dashboard after login
+          }, 1500);
+        }
+      } catch (error) {
+        message.textContent = "❌ " + error.message;
+        message.className = "text-red-600 text-center mt-3 text-sm";
+      }
+    });
+  </script>
+</body>
+</html>

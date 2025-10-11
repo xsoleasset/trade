@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XsoleTrades — Dashboard</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <style>
+    body { font-family: "Poppins", sans-serif; background: #f0f2f5; }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="bg-white shadow px-6 py-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-indigo-600">★ XSOLE ★</h1>
+    <button id="logoutBtn" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Logout</button>
+  </nav>
+
+  <!-- MAIN DASHBOARD CONTENT -->
+  <main class="max-w-5xl mx-auto p-6 space-y-6">
+
+    <!-- DASHBOARD HEADER -->
+    <h2 class="text-xl font-semibold mb-6">Dashboard</h2>
+
+    <!-- ACCOUNT SUMMARY SECTION -->
+    <div class="grid md:grid-cols-3 gap-6" data-aos="fade-up">
+      <!-- Capital -->
+      <div class="bg-white p-5 rounded-lg shadow">
+        <p class="text-sm text-gray-500">Capital</p>
+        <h2 id="capital" class="text-2xl font-bold mt-2">$0</h2>
+      </div>
+      <!-- Profit -->
+      <div class="bg-white p-5 rounded-lg shadow" data-aos="fade-up" data-aos-delay="100">
+        <p class="text-sm text-gray-500">Profit</p>
+        <h2 id="profit" class="text-2xl font-bold mt-2">$0</h2>
+      </div>
+      <!-- Withdrawable -->
+      <div class="bg-white p-5 rounded-lg shadow" data-aos="fade-up" data-aos-delay="200">
+        <p class="text-sm text-gray-500">Withdrawable</p>
+        <h2 id="withdrawable" class="text-2xl font-bold mt-2">$0</h2>
+      </div>
+    </div>
+
+    
+
+  </main>
+
+  <!-- AOS Animation Script -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script type="module">
+    AOS.init();
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBvuKoOq-gP7lnXdVNSyjDVBDrvSEsPe1Y",
+      authDomain: "xsole-d04f5.firebaseapp.com",
+      projectId: "xsole-d04f5",
+      storageBucket: "xsole-d04f5.firebasestorage.app",
+      messagingSenderId: "887725919565",
+      appId: "1:887725919565:web:80d856561725bdc0dd7b04",
+      measurementId: "G-427B7GX5N6"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // DASHBOARD ELEMENTS
+    const capitalEl = document.getElementById("capital");
+    const profitEl = document.getElementById("profit");
+    const withdrawableEl = document.getElementById("withdrawable");
+    const profileArea = document.getElementById("profileArea");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    
+
+    // DISPLAY PROFILE DATA
+    function displayProfile(data) {
+      capitalEl.textContent = "$" + (data.capital || 0).toLocaleString();
+      profitEl.textContent = "$" + (data.profit || 0).toLocaleString();
+      withdrawableEl.textContent = "$" + (data.withdrawable || 0).toLocaleString();
+
+      profileArea.innerHTML = `
+        <div><strong>Name:</strong> ${data.name || "—"}</div>
+        <div><strong>Email:</strong> ${data.email || "—"}</div>
+      `;
+    }
+
+    // CHECK AUTH STATE
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) window.location.href = "index.html";
+
+      const snap = await getDoc(doc(db, "clients", user.uid));
+      if (snap.exists()) displayProfile(snap.data());
+      else profileArea.textContent = "Profile not found.";
+    });
+
+    // LOGOUT
+    logoutBtn.addEventListener("click", async () => {
+      await signOut(auth);
+      window.location.href = "index.html";
+    });
+
+
+  </script>
+</body>
+</html>
