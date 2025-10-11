@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>XsoleTrades — Forex Account Management & Community</title>
+  <meta name="description" content="XsoleTrades offers professional forex account management, transparent performance, and a thriving trading community.">
+  <meta name="keywords" content="forex trading, account management, trading community, XsoleTrades">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS Animations -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    /* Font Import */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;800&display=swap');
+
+    /* Smooth scrolling */
+    html { scroll-behavior: smooth; }
+
+    /* Base body styles with background image */
+    body {
+      background: url('back.png') no-repeat center center fixed, linear-gradient(135deg, #e0f7fa 0%, #80deea 100%);
+      background-size: cover;
+      font-family: 'Inter', sans-serif;
+      color: #111827;
+      overflow-x: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      animation: bgZoom 20s ease-in-out infinite alternate;
+      will-change: background-size;
+    }
+
+    /* Subtle background zoom animation */
+    @keyframes bgZoom {
+      0% { background-size: 100%; }
+      100% { background-size: 110%; }
+    }
+
+    /* Water-like particle effect */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+      background-size: 300px 300px;
+      background-repeat: no-repeat;
+      animation: waterRipple 15s ease-in-out infinite;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    @keyframes waterRipple {
+      0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+      50% { transform: translate(20px, -20px) scale(1.05); opacity: 0.5; }
+      100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+    }
+
+    /* Glassmorphism for cards and sections */
+    .glass {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .glass:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Button styles */
+    button, a[href]:not(.no-hover) {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    button:hover, a[href]:not(.no-hover):hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+    /* Ripple effect on buttons */
+    .ripple {
+      position: relative;
+      overflow: hidden;
+    }
+    .ripple::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+      pointer-events: none;
+    }
+    .ripple:hover::after {
+      width: 200px;
+      height: 200px;
+    }
+
+    /* Navbar styles */
+    nav {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+    nav.shrink {
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 0.5rem 0;
+    }
+    nav img {
+      max-height: 40px;
+      transition: max-height 0.3s ease;
+    }
+    nav.shrink img {
+      max-height: 32px;
+    }
+    nav h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1e40af;
+      transition: font-size 0.3s ease;
+    }
+    nav.shrink h1 {
+      font-size: 1.25rem;
+    }
+
+    /* Text readability */
+    h1, h2, h3, h4, p, li, a {
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    }
+    h1, h2, h3, h4 {
+      font-weight: 800;
+      color: #111827;
+    }
+    p, li {
+      color: #111827;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+    a {
+      color: #1e40af;
+    }
+    a:hover {
+      color: #2563eb;
+    }
+
+    /* White text sections (home, freebie, footer) */
+    #home h2, #home p, #freebie h3, #freebie p, footer p, footer a {
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Dark summary card */
+    .dark-summary {
+      background: rgba(17, 24, 39, 0.5);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #e5e7eb;
+    }
+    .glow-available {
+      background: linear-gradient(90deg, #06b6d4, #22d3ee);
+      color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(6, 182, 212, 0.3);
+    }
+    .stat-card {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      padding: 16px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+    .stat-value {
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: #111827;
+    }
+    .stat-label {
+      font-size: 0.875rem;
+      color: #d1d5db;
+    }
+
+    /* Footer styles */
+    footer {
+      margin-top: auto;
+      background: rgba(17, 24, 39, 0.4);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 3rem 1.5rem;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 640px) {
+      body::before { background-size: 200px 200px; }
+      .stat-value { font-size: 1.1rem; }
+      nav h1 { font-size: 1.25rem; }
+      .glass { border-radius: 12px; }
+      footer { padding: 2rem 1rem; }
+    }
+  </style>
+</head>
+<body class="text-gray-900 font-sans leading-relaxed">
+  <!-- NAV -->
+  <nav id="navbar" class="fixed w-full top-0 left-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="logo.jpg" alt="XsoleTrades logo" class="site-logo rounded-md">
+        <h1 class="text-xl font-bold text-indigo-600">★𝕏𝕊𝕆𝕃𝔼★</h1>
+      </div>
+      <ul class="hidden md:flex items-center space-x-6 font-medium text-sm">
+        <li><a href="#home" class="hover:text-indigo-400 transition">Home</a></li>
+        <li><a href="#performance" class="hover:text-indigo-400 transition">Performance</a></li>
+        <li><a href="#services" class="hover:text-indigo-400 transition">Services</a></li>
+        <li><a href="#competition" class="hover:text-indigo-400 transition">Competition</a></li>
+        <li><a href="#education" class="hover:text-indigo-400 transition">Education</a></li>
+        <li><a href="#testimonials" class="hover:text-indigo-400 transition">Testimonials</a></li>
+        <li><a href="#pricing" class="hover:text-indigo-400 transition">Pricing</a></li>
+        <li><a href="#blog" class="hover:text-indigo-400 transition">Blog</a></li>
+        <li><a href="#trust" class="hover:text-indigo-400 transition">Trust</a></li>
+        <li><a href="#freebie" class="hover:text-indigo-400 transition">Freebie</a></li>
+        <li><a href="#dashboard" class="hover:text-indigo-400 transition">Dashboard</a></li>
+        <li><a href="#faq" class="hover:text-indigo-400 transition">FAQ</a></li>
+        <li><a href="https://chat.whatsapp.com/0029Vb75Y4o5K3zSkisdOC3A" target="_blank" class="ripple text-white bg-indigo-600 px-4 py-2 rounded-full shadow">Join</a></li>
+      </ul>
+      <button id="menu-btn" class="md:hidden text-2xl focus:outline-none" aria-label="Toggle mobile menu">☰</button>
+    </div>
+    <div id="menu" class="hidden md:hidden glass shadow-lg">
+      <ul class="flex flex-col space-y-3 p-6 text-sm">
+        <li><a class="menu-link hover:text-indigo-400" href="#home">Home</a></li>
+        <li><a class="menu-link hover:text-indigo-400" href="#performance">Performance</a></li>
+        <li><a class="menu-link hover:text-indigo-400" href="#services">Services</a></li>
+        <li><a class="menu-link hover:text-indigo-400" href="#competition">Competition</a></li>
+        <li><a class="menu-link hover:text-indigo-400" href="#education">Education</a></li>
+        <li><a class="menu-link hover:text-indigo-400" href="#testimonials">Testimonials</a></li>
+        <li><a class="menu-link hover:text-indigo-400" href="#pricing">Pricing</a></li>
+        <li><a class="menu-link hover:text-indigo-400" href="#blog">Blog</a></li>
+        <li><a class="menu-link hover:text-indigo-400" href="#trust">Trust</a></li>
+        <li><a class="menu-link hover:text-indigo-400" href="#freebie">Freebie</a></li>
+        <li><a class="menu-link hover:text-indigo-400" href="#dashboard">Dashboard</a></li>
+        <li><a class="menu-link hover:text-indigo-400" href="#faq">FAQ</a></li>
+        <li><a class="menu-link ripple text-white bg-indigo-600 px-4 py-2 rounded-full text-center" href="https://chat.whatsapp.com/0029Vb75Y4o5K3zSkisdOC3A" target="_blank">Join</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- MAIN DASHBOARD CONTENT -->
+  <main class="max-w-5xl mx-auto p-6 space-y-6 pt-24">
+    <h2 class="text-2xl font-semibold mb-6">Dashboard</h2>
+    <div class="grid md:grid-cols-3 gap-6" data-aos="fade-up">
+      <div class="glass p-5">
+        <p class="text-sm text-gray-600">Capital</p>
+        <h2 id="capital" class="text-2xl font-bold mt-2">$0</h2>
+      </div>
+      <div class="glass p-5" data-aos="fade-up" data-aos-delay="100">
+        <p class="text-sm text-gray-600">Profit</p>
+        <h2 id="profit" class="text-2xl font-bold mt-2">$0</h2>
+      </div>
+      <div class="glass p-5" data-aos="fade-up" data-aos-delay="200">
+        <p class="text-sm text-gray-600">Withdrawable</p>
+        <h2 id="withdrawable" class="text-2xl font-bold mt-2">$0</h2>
+      </div>
+    </div>
+    <div id="profileArea" class="mt-6 p-4 glass">
+      <div class="loading">Loading dashboard...</div>
+    </div>
+    <div id="logoutSection" class="mt-4 text-center hidden">
+      <button id="logoutBtn" class="ripple px-4 py-2 bg-red-500 text-white rounded-full shadow">Logout</button>
+    </div>
+  </main>
+
+  <!-- HERO -->
+  <section id="home" class="pt-32 pb-20 px-6 text-center glass">
+    <div class="max-w-5xl mx-auto">
+      <h2 data-aos="fade-up" class="text-4xl sm:text-5xl font-extrabold mb-4">We Grow Your Forex Portfolio</h2>
+      <p data-aos="fade-up" data-aos-delay="120" class="text-base sm:text-lg mb-6 max-w-2xl mx-auto">Professional account management, transparent performance, and a thriving trading community. We trade — you keep the profits.</p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a data-aos="zoom-in" data-aos-delay="260" href="https://chat.whatsapp.com/0029Vb75Y4o5K3zSkisdOC3A" target="_blank" class="ripple px-6 py-3 bg-indigo-600 text-white font-bold rounded-full shadow">Join WhatsApp Channel</a>
+        <a data-aos="zoom-in" data-aos-delay="360" href="#contact" class="ripple px-6 py-3 bg-transparent border border-white text-white font-semibold rounded-full">Get Started (Free Consult)</a>
+      </div>
+      <p class="mt-5 text-xs opacity-90">✅ Verified performance & client transparency. ⚠️ Trading involves risk.</p>
+    </div>
+  </section>
+
+  <!-- PERFORMANCE -->
+  <section id="performance" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16" data-aos="fade-up">
+    <h3 class="text-2xl sm:text-3xl font-bold text-center mb-8">Verified Performance & Trust</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      <div data-aos="fade-right" class="glass p-5 sm:p-6">
+        <h4 class="text-lg sm:text-xl font-semibold text-indigo-600 mb-2">Live Verified Results</h4>
+        <p class="text-gray-600 text-sm sm:text-base mb-4">Embed your MyFxBook / FXBlue widgets here to show live equity curves and trade history.</p>
+        <div class="w-full h-40 sm:h-48 bg-gray-100/50 rounded-lg flex items-center justify-center text-gray-400 text-sm">MyFxBook / FXBlue Embed Placeholder</div>
+      </div>
+      <div data-aos="zoom-in" data-aos-delay="150" class="glass p-5 sm:p-6">
+        <h4 class="text-lg sm:text-xl font-semibold text-indigo-600 mb-2">Highlights</h4>
+        <ul class="space-y-2 text-gray-600 text-sm sm:text-base">
+          <li>📈 Avg Monthly Growth: <b>+18%</b></li>
+          <li>👥 Clients Served: <b>50+</b></li>
+          <li>⏳ Years Trading: <b>4+</b></li>
+          <li>🔒 Funds remain in client broker accounts</li>
+        </ul>
+      </div>
+      <div data-aos="fade-left" class="glass p-5 sm:p-6">
+        <h4 class="text-lg sm:text-xl font-semibold text-indigo-600 mb-2">Security & Transparency</h4>
+        <p class="text-gray-600 text-sm sm:text-base mb-3">We prioritize risk management and transparent reporting — weekly summaries, monthly statements, and withdrawal proofs.</p>
+        <a href="#faq" class="inline-block mt-2 text-sm font-semibold text-indigo-600">See FAQ</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WITHDRAWAL STATUS + INVESTMENT SUMMARY -->
+  <section id="withdrawal-summary" class="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+      <div data-aos="fade-up" class="lg:col-span-1">
+        <div class="dark-summary p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="text-lg font-semibold mb-2">Withdrawal Status</h4>
+              <p class="text-sm">Current availability for client withdrawals</p>
+            </div>
+            <div class="ml-4">
+              <div class="glow-available px-4 py-2 flex items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.707a1 1 0 00-1.414-1.414L9 10.172 7.707 8.88a1 1 0 10-1.414 1.414L9 13l4.707-4.707z" clip-rule="evenodd" />
+                </svg>
+                <span class="font-semibold">Withdrawals Available</span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-5">
+            <p class="text-sm">Guidance: Withdrawals are processed by the team. Please open a ticket in the dashboard or contact support for withdrawal requests.</p>
+            <p class="mt-3 text-xs">Note: The company will update profits and withdrawal windows manually.</p>
+          </div>
+        </div>
+      </div>
+      <div data-aos="fade-up" data-aos-delay="120" class="lg:col-span-2">
+        <div class="glass p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-lg font-semibold">Client Investment Summary</h3>
+              <p class="text-sm text-gray-600">Snapshot of your capital, profit, and total cash</p>
+            </div>
+            <div class="text-sm text-gray-400">Last updated: <span class="font-medium text-gray-600">October 08, 2025</span></div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="stat-card p-4">
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="stat-label">Capital Invested</p>
+                  <p id="summary-capital" class="stat-value">$0</p>
+                </div>
+                <div class="text-xs text-white/70 bg-indigo-700 px-3 py-1 rounded-full">Capital</div>
+              </div>
+              <p class="mt-3 text-xs">Initial funds deposited by client.</p>
+            </div>
+            <div class="stat-card p-4">
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="stat-label">Available Profit</p>
+                  <p id="summary-profit" class="stat-value">$0</p>
+                </div>
+                <div class="text-xs text-white/70 bg-amber-600 px-3 py-1 rounded-full">Profit</div>
+              </div>
+              <p class="mt-3 text-xs">Profits available for withdrawal or reinvestment.</p>
+            </div>
+            <div class="stat-card p-4">
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="stat-label">Total Cash</p>
+                  <p id="summary-total" class="stat-value">$0</p>
+                </div>
+                <div class="text-xs text-white/70 bg-sky-600 px-3 py-1 rounded-full">Total</div>
+              </div>
+              <p class="mt-3 text-xs">Capital + Available Profit.</p>
+            </div>
+          </div>
+          <div class="mt-6 flex items-center gap-3">
+            <a href="#dashboard" class="ripple px-4 py-2 bg-indigo-600 text-white rounded-full shadow">Go to Dashboard</a>
+            <a href="mailto:info@xsoletrades.com" class="ripple px-4 py-2 border border-gray-200 rounded-full text-gray-700">Request Manual Withdrawal</a>
+            <span class="text-sm text-gray-500 ml-auto">If amounts look incorrect, contact support.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="py-12 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <h3 data-aos="fade-up" class="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-10">Services & Packages</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div data-aos="zoom-in" data-aos-delay="0" class="glass p-6 text-center">
+          <h4 class="font-semibold text-lg mb-2">Starter</h4>
+          <p class="text-gray-600 mb-4">$100 – $500 • For new investors</p>
+          <p class="text-gray-700 font-bold text-2xl mb-4">20% Profit Share</p>
+          <ul class="text-sm text-gray-600 mb-6 space-y-1">
+            <li>• Managed risk per trade</li>
+            <li>• Weekly reports</li>
+            <li>• Access to community</li>
+          </ul>
+          <a href="https://chat.whatsapp.com/0029Vb75Y4o5K3zSkisdOC3A" target="_blank" class="ripple inline-block px-4 py-2 bg-indigo-600 text-white rounded-full font-semibold">Join Starter</a>
+        </div>
+        <div data-aos="zoom-in" data-aos-delay="150" class="glass p-6 text-center">
+          <h4 class="font-semibold text-lg mb-2">Pro</h4>
+          <p class="text-gray-600 mb-4">$500 – $2,000 • For serious growth</p>
+          <p class="text-gray-700 font-bold text-2xl mb-4">18% Profit Share</p>
+          <ul class="text-sm text-gray-600 mb-6 space-y-1">
+            <li>• Lower risk per trade</li>
+            <li>• Bi-weekly reports</li>
+            <li>• Priority support</li>
+          </ul>
+          <a href="https://chat.whatsapp.com/0029Vb75Y4o5K3zSkisdOC3A" target="_blank" class="ripple inline-block px-4 py-2 bg-indigo-600 text-white rounded-full font-semibold">Join Pro</a>
+        </div>
+        <div data-aos="zoom-in" data-aos-delay="300" class="glass p-6 text-center">
+          <h4 class="font-semibold text-lg mb-2">VIP</h4>
+          <p class="text-gray-600 mb-4">$2,000+ • For high net-worth investors</p>
+          <p class="text-gray-700 font-bold text-2xl mb-4">15% Profit Share</p>
+          <ul class="text-sm text-gray-600 mb-6 space-y-1">
+            <li>• Custom risk plan</li>
+            <li>• Daily reports & calls</li>
+            <li>• Dedicated account manager</li>
+          </ul>
+          <a href="https://chat.whatsapp.com/0029Vb75Y4o5K3zSkisdOC3A" target="_blank" class="ripple inline-block px-4 py-2 bg-indigo-600 text-white rounded-full font-semibold">Apply VIP</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPETITION -->
+  <section id="competition" class="py-12 sm:py-16 px-4 sm:px-6" data-aos="fade-up">
+    <h3 class="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8">Monthly Trading Competition</h3>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      <div data-aos="fade-right" class="glass p-6">
+        <h4 class="font-semibold mb-3">Leaderboard</h4>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center p-3 glass rounded-lg">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-indigo-100/50 flex items-center justify-center text-indigo-600 font-semibold">1</span>
+              <div><p class="text-sm font-medium">TraderA</p><p class="text-xs text-gray-500">+34% this month</p></div>
+            </div>
+            <p class="font-semibold">$340</p>
+          </div>
+          <div class="flex justify-between items-center p-3 glass rounded-lg">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-indigo-100/50 flex items-center justify-center text-indigo-600 font-semibold">2</span>
+              <div><p class="text-sm font-medium">TraderB</p><p class="text-xs text-gray-500">+28% this month</p></div>
+            </div>
+            <p class="font-semibold">$280</p>
+          </div>
+          <div class="flex justify-between items-center p-3 glass rounded-lg">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-indigo-100/50 flex items-center justify-center text-indigo-600 font-semibold">3</span>
+              <div><p class="text-sm font-medium">TraderC</p><p class="text-xs text-gray-500">+22% this month</p></div>
+            </div>
+            <p class="font-semibold">$220</p>
+          </div>
+        </div>
+        <div class="mt-5 text-center">
+          <a href="https://chat.whatsapp.com/0029Vb75Y4o5K3zSkisdOC3A" target="_blank" class="ripple px-4 py-2 bg-indigo-600 text-white rounded-full">Join Competition</a>
+        </div>
+      </div>
+      <div data-aos="zoom-in" data-aos-delay="150" class="col-span-2 glass p-6">
+        <h4 class="font-semibold mb-3">Competition Rules & Prizes</h4>
+        <ul class="text-gray-600 list-disc pl-5 space-y-2">
+          <li>No more than 5 open positions at once.</li>
+          <li>Minimum starting balance: $50 (demo or real, specified per tournament).</li>
+          <li>Top 3 traders receive cash prizes or account credits.</li>
+          <li>Disqualification for evidence of manipulation.</li>
+        </ul>
+        <div class="mt-4 text-sm text-gray-500">Past winners receive public recognition and reward payouts within 7 days after leaderboard finalization.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education" class="py-12 sm:py-16">
+    <h3 data-aos="fade-up" class="text-2xl sm:text-3xl font-bold text-center mb-8">Trading Education</h3>
+    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
+      <article data-aos="fade-right" class="glass p-6">
+        <h4 class="font-semibold mb-2">Discipline Over Strategy</h4>
+        <p class="text-gray-600 text-sm">Consistent risk management often outperforms risky strategies. Learn why position sizing matters.</p>
+      </article>
+      <article data-aos="fade-left" data-aos-delay="120" class="glass p-6">
+        <h4 class="font-semibold mb-2">Top 3 Risk Rules</h4>
+        <p class="text-gray-600 text-sm">1) Never risk more than 2% per trade. 2) Use stop-loss. 3) Keep a trading journal.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" class="py-16 px-6">
+    <h3 class="text-2xl sm:text-3xl font-bold text-center mb-8">What Traders Say</h3>
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
+      <div data-aos="fade-up" class="glass p-6">
+        <p class="text-gray-600 italic">“XsoleTrades helped me grow my account by 40% in 3 months. Very transparent.”</p>
+        <h4 class="mt-4 font-semibold text-indigo-600">— James K.</h4>
+      </div>
+      <div data-aos="fade-up" data-aos-delay="180" class="glass p-6">
+        <p class="text-gray-600 italic">“Signals are accurate and consistent. My trading has improved massively.”</p>
+        <h4 class="mt-4 font-semibold text-indigo-600">— Sarah M.</h4>
+      </div>
+      <div data-aos="fade-up" data-aos-delay="360" class="glass p-6">
+        <p class="text-gray-600 italic">“The competition is fun and motivates me to keep learning.”</p>
+        <h4 class="mt-4 font-semibold text-indigo-600">— David O.</h4>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="py-16 px-6">
+    <h3 class="text-2xl sm:text-3xl font-bold text-center mb-8">Pricing Plans</h3>
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
+      <div data-aos="zoom-in" class="glass p-6 text-center">
+        <h4 class="text-xl font-semibold text-indigo-600 mb-3">Signals</h4>
+        <p class="text-gray-600 mb-4">Daily signals with SL & TP</p>
+        <p class="text-2xl font-bold mb-4">$50/mo</p>
+        <a href="#" class="ripple px-6 py-2 bg-indigo-600 text-white rounded-full">Subscribe</a>
+      </div>
+      <div data-aos="zoom-in" data-aos-delay="160" class="glass p-6 text-center border-2 border-indigo-600">
+        <h4 class="text-xl font-semibold text-indigo-600 mb-3">Account Management</h4>
+        <p class="text-gray-600 mb-4">We trade for you | Profit share model</p>
+        <p class="text-2xl font-bold mb-4">20% profit share</p>
+        <a href="#" class="ripple px-6 py-2 bg-indigo-600 text-white rounded-full">Start Now</a>
+      </div>
+      <div data-aos="zoom-in" data-aos-delay="320" class="glass p-6 text-center">
+        <h4 class="text-xl font-semibold text-indigo-600 mb-3">Education</h4>
+        <p class="text-gray-600 mb-4">Beginner to Advanced Trading</p>
+        <p class="text-2xl font-bold mb-4">$199 one-time</p>
+        <a href="#" class="ripple px-6 py-2 bg-indigo-600 text-white rounded-full">Enroll</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG / INSIGHTS -->
+  <section id="blog" class="py-16 px-6">
+    <h3 class="text-2xl sm:text-3xl font-bold text-center mb-8">Market Insights</h3>
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
+      <article data-aos="fade-up" class="glass p-6">
+        <h4 class="text-lg font-semibold text-indigo-600 mb-2">NFP Report Analysis</h4>
+        <p class="text-gray-600 text-sm">How the latest NFP will impact USD pairs.</p>
+      </article>
+      <article data-aos="fade-up" data-aos-delay="180" class="glass p-6">
+        <h4 class="text-lg font-semibold text-indigo-600 mb-2">Gold Outlook</h4>
+        <p class="text-gray-600 text-sm">Why gold could run 400 pips in Q4.</p>
+      </article>
+      <article data-aos="fade-up" data-aos-delay="360" class="glass p-6">
+        <h4 class="text-lg font-semibold text-indigo-600 mb-2">Trading Psychology</h4>
+        <p class="text-gray-600 text-sm">Mastering discipline and patience as a trader.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- TRUST / BADGES -->
+  <section id="trust" class="py-12 px-6 text-center">
+    <h3 class="text-2xl sm:text-3xl font-bold mb-4">Trusted by Traders Worldwide</h3>
+    <p class="max-w-3xl mx-auto text-gray-600 mb-6">We are transparent — you keep full control of your account. Verified results via MyFxBook & FXBlue.</p>
+    <div class="flex flex-wrap justify-center gap-6 items-center">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Myfxbook_logo.png/200px-Myfxbook_logo.png" class="h-12" alt="Myfxbook" loading="lazy">
+      <img src="https://www.fxblue.com/Content/Images/fxblue-logo.png" class="h-12" alt="FXBlue" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/MetaTrader_logo.png" class="h-12" alt="MetaTrader" loading="lazy">
+    </div>
+  </section>
+
+  <!-- FREEBIE / LEAD CAPTURE -->
+  <section id="freebie" class="py-16 px-6 glass text-white text-center">
+    <h3 class="text-2xl sm:text-3xl font-bold mb-4">Free Download: 5 Institutional Trading Secrets</h3>
+    <p class="max-w-2xl mx-auto text-sm sm:text-base mb-6">Enter your email to get instant access to actionable institutional concepts you can apply immediately.</p>
+    <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-3" onsubmit="event.preventDefault(); alert('Thanks — we would save the email in production.');">
+      <input required type="email" placeholder="Enter your email" class="w-full p-3 rounded-lg text-gray-900 bg-white/80" />
+      <button type="submit" class="ripple bg-indigo-600 px-5 py-3 rounded-lg font-bold text-white">Get It Free</button>
+    </form>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="py-16 px-6 text-center">
+    <h3 class="text-2xl sm:text-3xl font-bold mb-4">Client Dashboard (Coming Soon)</h3>
+    <p class="max-w-3xl mx-auto text-gray-600 mb-6">Soon, clients will have access to a private dashboard to track live trades, performance reports, and payouts in real-time.</p>
+    <img src="https://dummyimage.com/900x380/ddd/555&text=Dashboard+Preview" alt="dashboard preview" class="mx-auto rounded-lg shadow-md w-full max-w-3xl" loading="lazy" />
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-12 sm:py-16 px-4 sm:px-6 max-w-4xl mx-auto" data-aos="fade-up">
+    <h3 class="text-2xl sm:text-3xl font-bold text-center mb-6">Frequently Asked Questions</h3>
+    <div class="space-y-4">
+      <details class="glass p-4">
+        <summary class="font-semibold">How are funds managed?</summary>
+        <p class="text-gray-600 mt-2">Funds remain in your broker account; we manage via read-only permissions or trading signals depending on the package.</p>
+      </details>
+      <details class="glass p-4">
+        <summary class="font-semibold">What is the minimum deposit?</summary>
+        <p class="text-gray-600 mt-2">Starter begins at $100. Contact us for custom plans.</p>
+      </details>
+      <details class="glass p-4">
+        <summary class="font-semibold">How do payouts work?</summary>
+        <p class="text-gray-600 mt-2">Payouts are processed monthly. Profit share percentages are applied after fees and agreed conditions.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- CONTACT / FOOTER -->
+  <footer id="contact" class="glass text-white py-12 px-6 text-center">
+    <div class="max-w-5xl mx-auto">
+      <p class="text-sm sm:text-base">Email: <a href="mailto:info@xsoletrades.com" class="underline">info@xsoletrades.com</a> | WhatsApp: <a href="https://wa.me/2340000000000" class="underline">+234 000 000 0000</a></p>
+      <p class="text-gray-400 mt-3 text-xs sm:text-sm">⚠️ Risk Warning: Forex trading involves significant risk of loss. Only invest what you can afford to lose.</p>
+      <div class="mt-3 flex items-center justify-center gap-4">
+        <a href="#" class="underline text-xs">Terms & Conditions</a>
+        <a href="#" class="underline text-xs">Privacy Policy</a>
+      </div>
+      <p class="mt-3 text-gray-500 text-xs">&copy; 2025 XsoleTrades. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script type="module">
+    AOS.init({ duration: 900, once: false, offset: 120, easing: 'ease-in-out' });
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBvuKoOq-gP7lnXdVNSyjDVBDrvSEsPe1Y",
+      authDomain: "xsole-d04f5.firebaseapp.com",
+      projectId: "xsole-d04f5",
+      storageBucket: "xsole-d04f5.firebasestorage.app",
+      messagingSenderId: "887725919565",
+      appId: "1:887725919565:web:80d856561725bdc0dd7b04",
+      measurementId: "G-427B7GX5N6"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => console.log('Auth persistence set to local'))
+      .catch((error) => console.error('Error setting persistence:', error));
+
+    const capitalEl = document.getElementById("capital");
+    const profitEl = document.getElementById("profit");
+    const withdrawableEl = document.getElementById("withdrawable");
+    const profileArea = document.getElementById("profileArea");
+    const logoutSection = document.getElementById("logoutSection");
+    const summaryCapitalEl = document.getElementById("summary-capital");
+    const summaryProfitEl = document.getElementById("summary-profit");
+    const summaryTotalEl = document.getElementById("summary-total");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    let isInitialLoad = true;
+
+    function displayProfile(data) {
+      const capital = Number(data.capital) || 0;
+      const profit = Number(data.profit) || 0;
+      const withdrawable = Number(data.withdrawable) || 0;
+      const totalCash = capital + profit;
+      // Replace @ with # in email for display
+      const displayEmail = data.email ? data.email.replace('@', '#') : "—";
+
+      capitalEl.textContent = "$" + capital.toLocaleString();
+      profitEl.textContent = "$" + profit.toLocaleString();
+      withdrawableEl.textContent = "$" + withdrawable.toLocaleString();
+      summaryCapitalEl.textContent = "$" + capital.toLocaleString();
+      summaryProfitEl.textContent = "$" + profit.toLocaleString();
+      summaryTotalEl.textContent = "$" + totalCash.toLocaleString();
+
+      profileArea.innerHTML = `
+        <div><strong>Name:</strong> ${data.name || "—"}</div>
+        <div><strong>Email:</strong> ${displayEmail}</div>
+      `;
+      logoutSection.classList.remove('hidden');
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      console.log('Auth state changed:', user ? 'Logged in' : 'Logged out');
+      if (isInitialLoad && !user) {
+        console.log('Initial load - waiting for auth restoration...');
+        return;
+      }
+      isInitialLoad = false;
+      try {
+        if (!user) {
+          console.log('No user - redirecting to login');
+          window.location.href = "index.html";
+          return;
+        }
+        console.log('User authenticated:', user.uid);
+        const snap = await getDoc(doc(db, "clients", user.uid));
+        if (snap.exists()) {
+          displayProfile(snap.data());
+        } else {
+          profileArea.innerHTML = "Profile not found. Please contact support.";
+          logoutSection.classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        profileArea.innerHTML = "Error loading profile. Please try again later.";
+        logoutSection.classList.remove('hidden');
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        console.log('Logged out successfully');
+        window.location.href = "index.html";
+      } catch (error) {
+        console.error("Error signing out:", error);
+        alert("Error signing out. Please try again.");
+      }
+    });
+
+    const menuBtn = document.getElementById('menu-btn');
+    const menu = document.getElementById('menu');
+    menuBtn.addEventListener('click', () => menu.classList.toggle('hidden'));
+    document.querySelectorAll('.menu-link').forEach(link => {
+      link.addEventListener('click', () => menu.classList.add('hidden'));
+    });
+    document.addEventListener('click', (e) => {
+      const target = e.target;
+      if (!menu.contains(target) && !menuBtn.contains(target) && !menu.classList.contains('hidden')) {
+        menu.classList.add('hidden');
+      }
+    });
+
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 60) navbar.classList.add('shrink');
+      else navbar.classList.remove('shrink');
+    });
+
+    menuBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') menuBtn.click();
+    });
+  </script>
+
+  <!-- Tawk.to / Live chat placeholder -->
+  <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true;
+      s1.src='https://embed.tawk.to/YOUR_PROPERTY_ID/DEFAULT';
+      s1.charset='UTF-8';
+      s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
+    })();
+  </script>
+</body>
+</html>
