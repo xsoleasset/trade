@@ -7,69 +7,169 @@
 
   <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- AOS -->
+  <!-- AOS for animations -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <!-- Country flag icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" />
+  <!-- js-cookie library -->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+
   <style>
     body {
-      background: url('back.png') no-repeat center center fixed;
-      background-size: cover;
+      background: linear-gradient(to right, #4f46e5, #9333ea);
       font-family: "Poppins", sans-serif;
     }
     .card {
-      background: rgba(255, 255, 255, 0.637);
+      background: white;
       border-radius: 1rem;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
       padding: 2rem;
     }
+    .password-container {
+      position: relative;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+      background-repeat: no-repeat;
+      background-position-x: 98%;
+      background-position-y: 50%;
+    }
+    #message.success {
+      position: relative;
+      z-index: 10;
+      filter: none;
+    }
   </style>
 </head>
 <body class="flex items-center justify-center min-h-screen px-4">
+  <div id="blurContainer" class="w-full max-w-md">
+    <div class="card" data-aos="zoom-in">
+      <h1 id="formTitle" class="text-3xl font-bold text-center mb-6 text-indigo-700">Client Login</h1>
 
-  <div class="card w-full max-w-md" data-aos="zoom-in">
-    <h1 id="formTitle" class="text-3xl font-bold text-center mb-6 text-indigo-700">Client Login</h1>
+      <form id="authForm" class="space-y-4">
+        <div id="nameField" class="hidden">
+          <label class="block text-gray-700 font-medium">Full Name</label>
+          <input
+            type="text"
+            id="fullname"
+            class="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Your full name"
+          />
+        </div>
 
-    <form id="authForm" class="space-y-4">
-      <div id="nameField" class="hidden">
-        <label class="block text-gray-700 font-medium">Full Name</label>
-        <input type="text" id="fullname" class="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Your full name" />
-      </div>
+        <div id="countryField" class="hidden">
+          <label class="block text-gray-700 font-medium">Country</label>
+          <select
+            id="country"
+            class="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Select your country</option>
+          </select>
+        </div>
 
-      <div>
-        <label class="block text-gray-700 font-medium">Email</label>
-        <input type="email" id="email" class="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter your email" required />
-      </div>
+        <div id="phoneField" class="hidden">
+          <label class="block text-gray-700 font-medium">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            class="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Enter your phone number"
+          />
+        </div>
 
-      <div>
-        <label class="block text-gray-700 font-medium">Password</label>
-        <input type="password" id="password" class="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter your password" required />
-      </div>
+        <div>
+          <label class="block text-gray-700 font-medium">Email</label>
+          <input
+            type="email"
+            id="email"
+            class="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
 
-      <button type="submit" id="authBtn" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition">
-        Login
-      </button>
-    </form>
+        <div class="password-container">
+          <label class="block text-gray-700 font-medium">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Enter your password"
+            required
+          />
+          <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
+        </div>
 
-    <p class="text-sm text-center text-gray-600 mt-4">
-      <span id="toggleText">Don’t have an account?</span>
-      <a href="#" id="toggleLink" class="text-indigo-600 font-semibold">Sign up</a>
-    </p>
+        <div id="confirmPasswordField" class="hidden">
+          <label class="block text-gray-700 font-medium">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            class="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Confirm your password"
+          />
+          <span class="toggle-password" onclick="togglePassword('confirmPassword')">👁️</span>
+        </div>
 
-    <p id="message" class="text-center mt-3 text-sm"></p>
+        <div id="termsField" class="hidden">
+          <label class="flex items-center space-x-2 text-gray-700">
+            <input
+              type="checkbox"
+              id="terms"
+              class="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
+              required
+            />
+            <span>
+              I agree to the 
+              <a href="terms.html" target="_blank" class="text-indigo-600 font-semibold">Terms and Conditions</a>, 
+              <a href="privacy-policy.html" target="_blank" class="text-indigo-600 font-semibold">Privacy Policy</a>, and 
+              <a href="disclaimer.html" target="_blank" class="text-indigo-600 font-semibold">Disclaimer</a>.
+            </span>
+          </label>
+        </div>
+
+        <button
+          type="submit"
+          id="authBtn"
+          class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition"
+        >
+          Login
+        </button>
+      </form>
+
+      <p class="text-sm text-center text-gray-600 mt-4">
+        <span id="toggleText">Don’t have an account?</span>
+        <a href="#" id="toggleLink" class="text-indigo-600 font-semibold">Sign up</a>
+      </p>
+
+      <p id="message" class="text-center mt-3 text-sm"></p>
+      <p id="resendVerification" class="text-center mt-3 text-sm hidden">
+        Email not verified. <a href="#" id="resendLink" class="text-indigo-600 font-semibold">Resend verification email</a>
+      </p>
+      <p class="text-center mt-3">
+        <button id="logoutBtn" class="text-indigo-600 font-semibold hidden">Logout</button>
+      </p>
+    </div>
   </div>
 
-  <!-- Firebase + AOS -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     AOS.init();
   </script>
 
   <script type="module">
-    // Import Firebase functions
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-    import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBvuKoOq-gP7lnXdVNSyjDVBDrvSEsPe1Y",
       authDomain: "xsole-d04f5.firebaseapp.com",
@@ -80,22 +180,147 @@
       measurementId: "G-427B7GX5N6"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    console.log("🔥 Firebase connected successfully!");
-
-    // Toggle between Login and Signup
     const formTitle = document.getElementById("formTitle");
     const nameField = document.getElementById("nameField");
+    const countryField = document.getElementById("countryField");
+    const phoneField = document.getElementById("phoneField");
+    const confirmPasswordField = document.getElementById("confirmPasswordField");
+    const termsField = document.getElementById("termsField");
+    const termsCheckbox = document.getElementById("terms");
     const authBtn = document.getElementById("authBtn");
     const toggleText = document.getElementById("toggleText");
     const toggleLink = document.getElementById("toggleLink");
     const message = document.getElementById("message");
+    const resendVerification = document.getElementById("resendVerification");
+    const resendLink = document.getElementById("resendLink");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const blurContainer = document.getElementById("blurContainer");
     let isSignup = false;
 
+    // Teams webhook URL (replace with your actual Teams webhook URL)
+    const TEAMS_WEBHOOK_URL = "YOUR_TEAMS_WEBHOOK_URL_HERE";
+
+    // Send notification to Teams
+    async function sendTeamsNotification(message) {
+      try {
+        const response = await fetch(TEAMS_WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            "@type": "MessageCard",
+            "@context": "http://schema.org/extensions",
+            "summary": "XsoleTrades Notification",
+            "title": "XsoleTrades User Action",
+            "text": message
+          })
+        });
+        if (!response.ok) throw new Error("Failed to send Teams notification");
+        console.log("Teams notification sent successfully");
+      } catch (error) {
+        console.error("Error sending Teams notification:", error);
+      }
+    }
+
+    // Fallback country list
+    const fallbackCountries = [
+      { name: "United States", code: "us" },
+      { name: "United Kingdom", code: "gb" },
+      { name: "Nigeria", code: "ng" },
+      { name: "Canada", code: "ca" },
+      { name: "Australia", code: "au" },
+    ];
+
+    // Populate country dropdown
+    async function loadCountries() {
+      const countrySelect = document.getElementById("country");
+      try {
+        const response = await fetch("https://restcountries.com/v3.1/all");
+        if (!response.ok) throw new Error("Failed to fetch countries");
+        const countries = await response.json();
+        countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+        countries.forEach((country) => {
+          const option = document.createElement("option");
+          option.value = country.name.common;
+          option.textContent = country.name.common;
+          option.setAttribute("data-country-code", country.cca2.toLowerCase());
+          countrySelect.appendChild(option);
+        });
+        console.log("Countries loaded successfully");
+        detectCountry();
+      } catch (error) {
+        console.error("Error loading countries:", error);
+        fallbackCountries.forEach((country) => {
+          const option = document.createElement("option");
+          option.value = country.name;
+          option.textContent = country.name;
+          option.setAttribute("data-country-code", country.code.toLowerCase());
+          countrySelect.appendChild(option);
+        });
+        message.textContent = "⚠️ Failed to load full country list. Using limited options.";
+        message.className = "text-yellow-600 text-center mt-3 text-sm";
+        detectCountry();
+      }
+    }
+
+    // Country detection
+    async function detectCountry() {
+      const countrySelect = document.getElementById("country");
+      try {
+        const response = await fetch("https://ipapi.co/json/");
+        if (!response.ok) throw new Error("Failed to detect country");
+        const data = await response.json();
+        const countryName = data.country_name;
+        if (countryName) {
+          countrySelect.value = countryName;
+          const option = countrySelect.querySelector(option[value="${countryName}"]);
+          if (option) {
+            option.setAttribute("data-country-code", data.country_code.toLowerCase());
+            console.log("Country detected:", countryName);
+          } else {
+            console.warn("Detected country not in dropdown:", countryName);
+          }
+        }
+      } catch (error) {
+        console.error("Country detection failed:", error);
+        message.textContent = "⚠️ Unable to detect country. Please select manually.";
+        message.className = "text-yellow-600 text-center mt-3 text-sm";
+      }
+    }
+
+    loadCountries();
+
+    // Toggle password visibility
+    window.togglePassword = function (fieldId) {
+      const field = document.getElementById(fieldId);
+      const icon = field.nextElementSibling;
+      if (field.type === "password") {
+        field.type = "text";
+        icon.textContent = "🙈";
+      } else {
+        field.type = "password";
+        icon.textContent = "👁️";
+      }
+    };
+
+    // Check cookie on page load
+    onAuthStateChanged(auth, (user) => {
+      if (user && user.emailVerified && Cookies.get("xsole_session")) {
+        window.location.href = "dashboard.html";
+      } else if (user && !user.emailVerified) {
+        message.textContent = "❌ Please verify your email before logging in.";
+        message.className = "text-red-600 text-center mt-3 text-sm";
+        resendVerification.classList.remove("hidden");
+        logoutBtn.classList.remove("hidden");
+      } else {
+        Cookies.remove("xsole_session");
+      }
+    });
+
+    // Toggle between login and signup
     toggleLink.addEventListener("click", (e) => {
       e.preventDefault();
       isSignup = !isSignup;
@@ -105,43 +330,140 @@
         toggleText.textContent = "Already have an account?";
         toggleLink.textContent = "Login";
         nameField.classList.remove("hidden");
+        countryField.classList.remove("hidden");
+        phoneField.classList.remove("hidden");
+        confirmPasswordField.classList.remove("hidden");
+        termsField.classList.remove("hidden");
+        resendVerification.classList.add("hidden");
+        logoutBtn.classList.add("hidden");
       } else {
         formTitle.textContent = "Client Login";
         authBtn.textContent = "Login";
         toggleText.textContent = "Don’t have an account?";
         toggleLink.textContent = "Sign up";
         nameField.classList.add("hidden");
+        countryField.classList.add("hidden");
+        phoneField.classList.add("hidden");
+        confirmPasswordField.classList.add("hidden");
+        termsField.classList.add("hidden");
+        resendVerification.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
       }
       message.textContent = "";
+      blurContainer.classList.remove("blur-md");
     });
 
-    // Handle login/signup
+    // Resend verification email
+    resendLink.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, document.getElementById("password").value);
+        const user = userCredential.user;
+        if (!user.emailVerified) {
+          await sendEmailVerification(user);
+          message.textContent = "✅ Verification email sent! Please check your inbox.";
+          message.className = "text-green-600 text-center mt-3 text-sm";
+        } else {
+          Cookies.set("xsole_session", user.uid, { expires: 7, secure: true, sameSite: "Strict" });
+          await sendTeamsNotification(User logged in: ${email});
+          message.textContent = "✅ Email already verified! Redirecting...";
+          message.className = "text-green-600 text-center mt-3 text-sm success";
+          blurContainer.classList.add("blur-md");
+          setTimeout(() => {
+            window.location.href = "dashboard.html";
+          }, 1500);
+        }
+      } catch (error) {
+        message.textContent = "❌ Error sending verification email: " + error.message;
+        message.className = "text-red-600 text-center mt-3 text-sm";
+      }
+    });
+
+    // Logout
+    logoutBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      try {
+        await signOut(auth);
+        Cookies.remove("xsole_session");
+        message.textContent = "✅ Logged out successfully!";
+        message.className = "text-green-600 text-center mt-3 text-sm";
+        logoutBtn.classList.add("hidden");
+        resendVerification.classList.add("hidden");
+        document.getElementById("authForm").reset();
+        blurContainer.classList.remove("blur-md");
+      } catch (error) {
+        message.textContent = "❌ Error logging out: " + error.message;
+        message.className = "text-red-600 text-center mt-3 text-sm";
+      }
+    });
+
+    // Form submission
     document.getElementById("authForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       const fullname = document.getElementById("fullname").value;
+      const country = document.getElementById("country").value;
+      const phone = document.getElementById("phone").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const terms = document.getElementById("terms").checked;
+
+      if (isSignup && !terms) {
+        message.textContent = "❌ You must agree to the Terms and Conditions, Privacy Policy, and Disclaimer!";
+        message.className = "text-red-600 text-center mt-3 text-sm";
+        return;
+      }
+
+      if (isSignup && password !== confirmPassword) {
+        message.textContent = "❌ Passwords do not match!";
+        message.className = "text-red-600 text-center mt-3 text-sm";
+        return;
+      }
+
+      if (isSignup && (!fullname || !country || !phone)) {
+        message.textContent = "❌ Please fill in all fields!";
+        message.className = "text-red-600 text-center mt-3 text-sm";
+        return;
+      }
 
       try {
         if (isSignup) {
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
           const user = userCredential.user;
+          await sendEmailVerification(user);
           await setDoc(doc(db, "clients", user.uid), {
             name: fullname,
             email: email,
-            profit: 0,
+            country: country,
+            phone: phone,
             capital: 0,
-            withdrawable: 0,
+            profit: 0,
+            withdrawable: 0
           });
-          message.textContent = "✅ Account created successfully!";
+          await sendTeamsNotification(New user signed up: ${fullname} (${email}) from ${country});
+          message.textContent = "✅ Account created successfully! Please verify your email.";
           message.className = "text-green-600 text-center mt-3 text-sm";
+          resendVerification.classList.remove("hidden");
+          logoutBtn.classList.remove("hidden");
         } else {
-          await signInWithEmailAndPassword(auth, email, password);
-          message.textContent = "✅ Login successful! Redirecting...";
-          message.className = "text-green-600 text-center mt-3 text-sm";
-          setTimeout(() => {
-            window.location.href = "dashboard.html"; // Redirect to dashboard after login
-          }, 1500);
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+          if (user.emailVerified) {
+            Cookies.set("xsole_session", user.uid, { expires: 7, secure: true, sameSite: "Strict" });
+            await sendTeamsNotification(User logged in: ${email});
+            message.textContent = "✅ Login successful! Redirecting...";
+            message.className = "text-green-600 text-center mt-3 text-sm success";
+            blurContainer.classList.add("blur-md");
+            setTimeout(() => {
+              window.location.href = "dashboard.html";
+            }, 1500);
+          } else {
+            message.textContent = "❌ Please verify your email before logging in.";
+            message.className = "text-red-600 text-center mt-3 text-sm";
+            resendVerification.classList.remove("hidden");
+            logoutBtn.classList.remove("hidden");
+          }
         }
       } catch (error) {
         message.textContent = "❌ " + error.message;
